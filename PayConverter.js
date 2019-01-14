@@ -1,4 +1,4 @@
-const PayConverter = class{
+module.exports = PayConverter = class{
 	constructor(publicHolidays = 7, vacationDays = 10, weekends = true){
 		this.hourly = 0;
 		this.salary = 0;
@@ -17,17 +17,22 @@ const PayConverter = class{
 		return this.hourly;
 	}
 	setHourly(rate){
-		this.hourly = rate;
+		if(isNaN(rate)){throw Error('NaN passed to PayConverter.setHourly');}
+		this.hourly = Number(rate);
 		this.recalculateSalary();
+		return this;
 	}
 	getSalary(){
 		return this.salary;
 	}
 	setSalary(rate){
-		this.salary = rate;
+		if(isNaN(rate)){throw Error('NaN passed to PayConverter.setSalary');}
+		this.salary = Number(rate);
 		this.recalcuateHourly();
+		return this;
 	}
-	getVacationDays(days){
-		this.vacationDays = days;
+	getVacationDays(){
+		return this.vacationDays;
 	}
 }
+
