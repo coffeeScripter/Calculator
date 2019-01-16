@@ -11,7 +11,9 @@ const DigitRegex = /\d+[\.]?[\d]+|\d/;
 
 module.exports = Tokenizer = class{
 	constructor(input){
-		this.input = input;
+		if(typeof input == 'string'){
+			this.input = input;
+		}
 		this.OperatorList = [];
 		this.DataList = [];
 	}
@@ -19,7 +21,17 @@ module.exports = Tokenizer = class{
 		return this.input == '';
 	}
 	isParenthetical(){
-		return this.input.charAt(0) == '(';
+		if( this.input.charAt(0) == ')'){
+			// should never run into an unclosed parenthesis 
+			throw new Error('Bad Parenthesis!');
+		}
+		if( this.input.charAt(0) == '('){
+			if(ParentheticalRegex.test(this.input)){ 
+				return true;
+			}
+			throw new Error('Bad Parenthesis');
+		}
+		return false;
 	}
 	isFunction(){
 		if(FunctionRegex.test(this.input)) {
@@ -39,7 +51,7 @@ module.exports = Tokenizer = class{
 	popParenthetical(){
 		let match = ParentheticalRegex.exec(this.input);
 		this.input = this.input.substring(match[0].length);
-		return new ParentheticalToken(match[0].substring(1, match[0].length-1));
+		return new ParentheticalToken(match[0].substring(1, match[0].length-1));// remove wrapping parens
 	}
 	popFunction(){
 		let match = ParentheticalRegex.exec(this.input);

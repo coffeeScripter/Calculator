@@ -6,12 +6,12 @@ module.exports =  FunctionToken = class{
 	}
 	solve(){
 		switch(this.Func){
-			case 'CMB' : return new DigitToken(a**b);
-			case 'PMB' : return new DigitToken(a/b);
-			case '-' : return new DigitToken(a-b);
-			case '+' : return new DigitToken(a+b);
-			case '%' : return new DigitToken(a%b);
-			case '^' : return new DigitToken(a**b);
+			// case 'CMB' : return new DigitToken(a**b);
+			// case 'PMB' : return new DigitToken(a/b);
+			// case '-' : return new DigitToken(a-b);
+			// case '+' : return new DigitToken(a+b);
+			// case '%' : return new DigitToken(a%b);
+			// case '^' : return new DigitToken(a**b);
 			default : new Error('unknown operator');
 		}
 	}
