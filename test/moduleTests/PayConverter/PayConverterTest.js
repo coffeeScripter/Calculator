@@ -49,7 +49,7 @@ describe('PayConverter', function() {
 		});
 		it('Should always return a value', function(){
 			assert(converter.getVacationDays()==10); // test default
-			assert(new PayConverter(null,5).getVacationDays() == 5);// returns set value
+			assert(new PayConverter(5).getVacationDays() == 5);// returns set value
 		});
 	});
 	describe('setHourly', function(){

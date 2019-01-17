@@ -1,6 +1,6 @@
 // MetaData Classes
  
-module.exports = ColumnMetaData = class{
+const ColumnMetaData = class{
 	constructor(name, num){
 		this.ColumnName = 'columnName' + num;
 		this.NumberCount = 0;
@@ -9,15 +9,21 @@ module.exports = ColumnMetaData = class{
 		this.count = 0;
 	}
 }
-module.exports = QualitativeColumnMetaData = class{
+const QualitativeColumnMetaData = class{
 	constructor(name){
 		// super(name)
 	}
 }
 Object.setPrototypeOf(QualitativeColumnMetaData.prototype, ColumnMetaData);
-module.exports = QuantitativeColumnMetaData = class{
+const QuantitativeColumnMetaData = class{
 	constructor(name){
 		// super(name)
 	}
 }
 Object.setPrototypeOf(QuantitativeColumnMetaData.prototype, ColumnMetaData);
+
+// TODO: add Factory 
+
+module.exports = {'ColumnMetaData': ColumnMetaData,
+'QualitativeColumnMetaData': QualitativeColumnMetaData,
+'QuantitativeColumnMetaData' :QuantitativeColumnMetaData}

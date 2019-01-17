@@ -10,7 +10,7 @@ const HeaderReader = class{
 		header.on('data', function(chunk) {
 			let firstLine = chunk.split(/\r?\n/g)[0].split(',');
 			for (let i in firstLine){
-				columnList.push(new ColumnMetaData(firstLine[i],i)); 
+				columnList.push(new metaData.ColumnMetaData(firstLine[i],i)); 
 			}	
 			header.close();
 		});
@@ -24,6 +24,15 @@ const HeaderReader = class{
 	}
 }
 
+const writeFile = function(fileName,data){
+	let ws = fs.createWriteStream(fileName,'utf8');
+	fs.writeFile(fileName,JSON.stringify(data), (err) => {
+		if(err){
+			throw err;
+		}
+		console.log(data);
+	});
+}
 
 const readFile = function(fileName, headerData){
 	let rs = fs.createReadStream(fileName,'utf8');
@@ -42,9 +51,7 @@ const readFile = function(fileName, headerData){
 				columns[i].NominalCount++;
 			}
 			columns[i].count++;
-
 		}
-		
 	}
 	rs.on('data', function(chunk) {
 		let lines = (buffer + chunk).split(/\r?\n/g);
@@ -58,7 +65,7 @@ const readFile = function(fileName, headerData){
 			console.log('ended on non-empty buffer: ' + buffer);
 			processLine(buffer.split(','));
 		}
-		console.log(columns);
+		writeFile(fileName + '.meta',columns);
 	});
 	rs.on('error', function(err){
 		console.log(err);

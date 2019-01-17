@@ -1,5 +1,5 @@
 module.exports = PayConverter = class{
-	constructor(publicHolidays = 7, vacationDays = 10, weekends = true){
+	constructor(vacationDays = 10, publicHolidays = 7, weekends = true){
 		this.hourly = 0;
 		this.salary = 0;
 		this.vacationDays = vacationDays;
