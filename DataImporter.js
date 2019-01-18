@@ -34,23 +34,28 @@ const writeFile = function(fileName,data){
 	});
 }
 
-const readFile = function(fileName, headerData){
+const readFile = function(fileName, headerData, processLine){
 	let rs = fs.createReadStream(fileName,'utf8');
 	let columns = headerData;
+	if(!Array.isArray(columns)){
+		columns = new HeaderReader(fileName).readHeaderLine();
+	}
 	let buffer = '';
-	let processLine = function(line){
-		for (let i = 0; i < line.length; i++) {
-			// TODO: add Categorical check
-			if(/[-]?\d+[\.]?[\d]+|\d/.test(line[i])){
-				columns[i].NumberCount++;
+	if(typeof processLine != 'function'){
+		processLine = function(line){
+			for (let i = 0; i < line.length; i++) {
+				// TODO: add Categorical check
+				if(/[-]?\d+[\.]?[\d]+|\d/.test(line[i])){
+					columns[i].NumberCount++;
+				}
+				else if(!/\S/g.test(line[i])){
+					columns[i].FalsyCount++;
+				}
+				else{
+					columns[i].NominalCount++;
+				}
+				columns[i].count++;
 			}
-			else if(!/\S/g.test(line[i])){
-				columns[i].FalsyCount++;
-			}
-			else{
-				columns[i].NominalCount++;
-			}
-			columns[i].count++;
 		}
 	}
 	rs.on('data', function(chunk) {
@@ -70,4 +75,22 @@ const readFile = function(fileName, headerData){
 	rs.on('error', function(err){
 		console.log(err);
 	});
+}
+
+module.exports = DataImporter = class{
+	constructor(){}
+	readFile(fileName, start, end){
+		//TODO
+		throw new Error('Not Implemented');
+	}
+	readHeader(fileName){
+		//TODO
+		throw new Error('Not Implemented');
+	}
+	scanFile(fileName){
+		readFile(fileName, new HeaderReader(fileName).readHeaderLine());
+	}
+	processFile(fileName,process){
+		readFile(fileName, new HeaderReader(fileName).readHeaderLine(), process);
+	}
 }
