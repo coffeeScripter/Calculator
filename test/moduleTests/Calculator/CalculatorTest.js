@@ -2,7 +2,7 @@
 
 require('mocha');
 var assert = require('assert');
-var expression = require('./../../../calculator');
+var expression = require('./../../../CalculationUtils/calculator');
 
 describe('Expression', function() {
 	it('should export a class', function() {

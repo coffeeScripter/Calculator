@@ -2,7 +2,7 @@
 
 require('mocha');
 var assert = require('assert');
-var PayConverter = require('./../../../PayConverter');
+var PayConverter = require('./../../../Misc/PayConverter');
 
 describe('PayConverter', function() {
 	it('should export a class', function() {

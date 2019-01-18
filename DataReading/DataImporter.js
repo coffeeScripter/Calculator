@@ -34,13 +34,14 @@ const writeFile = function(fileName,data){
 	});
 }
 
-const readFile = function(fileName, headerData, processLine){
+const readFile = function(fileName, headerData, processLine,callback = console.log){
 	let rs = fs.createReadStream(fileName,'utf8');
 	let columns = headerData;
 	if(!Array.isArray(columns)){
 		columns = new HeaderReader(fileName).readHeaderLine();
 	}
 	let buffer = '';
+	
 	if(typeof processLine != 'function'){
 		processLine = function(line){
 			for (let i = 0; i < line.length; i++) {
@@ -56,21 +57,22 @@ const readFile = function(fileName, headerData, processLine){
 				}
 				columns[i].count++;
 			}
+			return columns;
 		}
 	}
 	rs.on('data', function(chunk) {
 		let lines = (buffer + chunk).split(/\r?\n/g);
 		buffer = lines.pop();
 		for (let i = 0; i < lines.length; ++i) {
-			processLine(lines[i].split(','));
+			columns = processLine(lines[i].split(','),columns);
 		}
 	});
 	rs.on('end', function() {
 		if(buffer.length > 0){
 			console.log('ended on non-empty buffer: ' + buffer);
-			processLine(buffer.split(','));
+			columns = processLine(buffer.split(','),columns);
+			callback(columns);
 		}
-		writeFile(fileName + '.meta',columns);
 	});
 	rs.on('error', function(err){
 		console.log(err);
@@ -88,9 +90,13 @@ module.exports = DataImporter = class{
 		throw new Error('Not Implemented');
 	}
 	scanFile(fileName){
-		readFile(fileName, new HeaderReader(fileName).readHeaderLine());
+		return readFile(fileName, new HeaderReader(fileName).readHeaderLine());
 	}
-	processFile(fileName,process){
-		readFile(fileName, new HeaderReader(fileName).readHeaderLine(), process);
+	processFile(fileName,process, callback){
+		readFile(fileName, 
+			new HeaderReader(fileName).readHeaderLine(), 
+			process,
+			callback
+			);
 	}
 }

@@ -6,6 +6,7 @@ const ColumnMetaData = class{
 		this.NumberCount = 0;
 		this.NominalCount = 0;
 		this.FalsyCount = 0;
+		this.sum = 0;
 		this.count = 0;
 	}
 }

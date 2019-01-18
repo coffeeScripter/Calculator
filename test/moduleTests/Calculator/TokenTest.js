@@ -2,11 +2,11 @@
 
 require('mocha');
 var assert = require('assert');
-var calculator = require('./../../../Tokenizer/DigitToken');
-var calculator = require('./../../../Tokenizer/FunctionToken');
-var calculator = require('./../../../Tokenizer/OperatorToken');
-var calculator = require('./../../../Tokenizer/ParentheticalToken');
-var calculator = require('./../../../Tokenizer/Tokenizer');
+var calculator = require('./../../../CalculationUtils/Tokenizer/DigitToken');
+var calculator = require('./../../../CalculationUtils/Tokenizer/FunctionToken');
+var calculator = require('./../../../CalculationUtils/Tokenizer/OperatorToken');
+var calculator = require('./../../../CalculationUtils/Tokenizer/ParentheticalToken');
+var calculator = require('./../../../CalculationUtils/Tokenizer/Tokenizer');
 
 describe('Tokens', function(){
 	describe('FunctionToken', function(){
