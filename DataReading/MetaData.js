@@ -6,7 +6,6 @@ const ColumnMetaData = class{
 		this.NumberCount = 0;
 		this.NominalCount = 0;
 		this.FalsyCount = 0;
-		this.sum = 0;
 		this.count = 0;
 	}
 }
@@ -18,6 +17,7 @@ const QualitativeColumnMetaData = class{
 Object.setPrototypeOf(QualitativeColumnMetaData.prototype, ColumnMetaData);
 const QuantitativeColumnMetaData = class{
 	constructor(name){
+		this.sum = 0;
 		// super(name)
 	}
 }
