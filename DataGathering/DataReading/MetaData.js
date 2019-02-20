@@ -7,6 +7,7 @@ const ColumnMetaData = class{
 		this.NominalCount = 0;
 		this.FalsyCount = 0;
 		this.count = 0;
+		this.sum = 0;
 	}
 }
 const QualitativeColumnMetaData = class{

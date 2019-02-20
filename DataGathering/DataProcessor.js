@@ -14,25 +14,10 @@ let processor = function(line, columns){
 		else{
 			columns[i].NominalCount++;
 		}
-		columns[i].count++;
-
-	
+		columns[i].count++;	
 	}
 	return columns;
 }
 
-const d = new DataImporter();
-d.processFile(args[0],processor, function(columns){
-	console.log(columns[0].sum);
-	let supersum = 0;
-	let b = 50;
-	for(let i = columns.length-1; i > 0;i--){
-		supersum += columns[i].sum *(10**(b-i));
-		if(supersum.length > 10){
-			supersum == supersum.slice(0, 10);
-			b--;
-		}
-	}
-	console.log(supersum);
-});
+new DataImporter().processFile(args[0],processor,  console.log);
 
