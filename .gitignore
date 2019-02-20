@@ -1,3 +1,4 @@
 test/InterfaceTests/testData/
 *.csv
 *.meta
+react-app/

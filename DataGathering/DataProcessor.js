@@ -22,7 +22,7 @@ let processor = function(line, columns){
 }
 
 const d = new DataImporter();
-console.log(d.processFile(args[0],processor,function(columns){
+d.processFile(args[0],processor, function(columns){
 	console.log(columns[0].sum);
 	let supersum = 0;
 	let b = 50;
@@ -34,5 +34,5 @@ console.log(d.processFile(args[0],processor,function(columns){
 		}
 	}
 	console.log(supersum);
-}));
+});
 
