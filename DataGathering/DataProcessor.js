@@ -7,6 +7,9 @@ let processor = function(line, columns){
 		if(/[-]?\d+[\.]?[\d]+|\d/.test(line[i])){
 			columns[i].NumberCount++;
 			columns[i].sum += Number(line[i]);
+			
+			let presum = columns[i].average * ((columns[i].NumberCount -1)/columns[i].NumberCount) ;
+			columns[i].average = presum + (Number(line[i])/columns[i].NumberCount);
 		}
 		else if(!/\S/g.test(line[i])){
 			columns[i].FalsyCount++;
