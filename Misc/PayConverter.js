@@ -11,7 +11,7 @@ module.exports = PayConverter = class{
 		this.hourly = this.salary/this.workDays/8;
 	}
 	recalculateSalary(){
-		this.salary = this.hourly*this.workDays*8;		
+		this.salary = this.hourly*this.workDays*8;
 	}
 	getHourly(){
 		return this.hourly;
@@ -35,4 +35,3 @@ module.exports = PayConverter = class{
 		return this.vacationDays;
 	}
 }
-

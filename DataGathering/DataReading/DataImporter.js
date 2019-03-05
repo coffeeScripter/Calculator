@@ -1,8 +1,10 @@
-var fs = require('fs');
+const fs = require('fs');
 const HeaderReader = require('./CSVImporter/ReadHeader.js');
+const CsvImporter = require('./CSVImporter/Importer.js');
+const JSONImporter = require('./JSONImporter/Importer.js');
 
 const writeFile = function(fileName,data){
-	let ws = fs.createWriteStream(fileName,'utf8');
+	//let ws = fs.createWriteStream(fileName,'utf8');
 	fs.writeFile(fileName,JSON.stringify(data), (err) => {
 		if(err){
 			throw err;
@@ -17,45 +19,21 @@ const readFile = function(fileName, headerData, processLine,callback = console.l
 	if(!Array.isArray(columns)){
 		columns = new HeaderReader(fileName).readHeaderLine();
 	}
-	let buffer = '';
-	
 	if(typeof processLine != 'function'){
-		processLine = function(line){
-			for (let i = 0; i < line.length; i++) {
-				// TODO: add Categorical check
-				if(/[-]?\d+[\.]?[\d]+|\d/.test(line[i])){
-					columns[i].NumberCount++;
-				}
-				else if(!/\S/g.test(line[i])){
-					columns[i].FalsyCount++;
-				}
-				else{
-					columns[i].NominalCount++;
-				}
-				columns[i].count++;
-			}
-			return columns;
-		}
+		throw new Error("No processing requested!");
 	}
-	rs.on('data', function(chunk) {
-		let lines = (buffer + chunk).split(/\r?\n/g);
-		buffer = lines.pop();
-		for (let i = 0; i < lines.length; ++i) {
-			columns = processLine(lines[i].split(','),columns);
-		}
-	});
-	rs.on('end', function() {
-		if(buffer.length > 0){
-			console.log('ended on non-empty buffer: ' + buffer);
-			columns = processLine(buffer.split(','),columns);
-			callback(columns);
-		}
-	});
-	rs.on('error', function(err){
-		console.log(err);
-	});
-}
+	let fileHandler;
+	// file reader selection
+	switch(fileName.substring(fileName.lastIndexOf('.')+1)){
+		case 'json':
+		case 'js':
+		case 'jsx': fileHandler = new JSONImporter(rs, columns, processLine, callback);
+			break;
+		case 'csv' : fileHandler = new CSVImporter(rs, columns, processLine, callback);
+			break;
+	}
 
+}
 module.exports = DataImporter = class{
 	constructor(){}
 	readFile(fileName, start, end){
@@ -70,8 +48,8 @@ module.exports = DataImporter = class{
 		return readFile(fileName, new HeaderReader(fileName).readHeaderLine());
 	}
 	processFile(fileName,process, callback){
-		readFile(fileName, 
-			new HeaderReader(fileName).readHeaderLine(), 
+		readFile(fileName,
+			new HeaderReader(fileName).readHeaderLine(),
 			process,
 			callback
 			);
